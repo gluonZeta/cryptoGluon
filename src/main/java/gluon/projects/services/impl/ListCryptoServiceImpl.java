@@ -11,8 +11,4 @@ public class ListCryptoServiceImpl implements ListCryptoService {
         Properties properties = SonarProjectUtils.getPropertiesByFileName("application.properties");
     }
 
-    @Override
-    public void getListCrypto(boolean update) {
-
-    }
 }
