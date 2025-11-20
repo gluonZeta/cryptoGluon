@@ -49,9 +49,10 @@
                           <goal>prepare-agent</goal>
                       </goals>
                   </execution>
+
                   <execution>
-                      <id>jacoco-site</id>
-                      <phase>package</phase>
+                      <id>report</id>
+                      <phase>verify</phase>
                       <goals>
                           <goal>report</goal>
                       </goals>
