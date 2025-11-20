@@ -1,6 +1,6 @@
 package gluon.projects.utils;
 
-import gluon.projects.exceptions.ElementProjectException;
+import gluon.projects.exceptions.TechnicalProjectException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +13,7 @@ public class SonarProjectUtils {
         try(InputStream inputStream = SonarProjectUtils.class.getClassLoader().getResourceAsStream(fileName)) {
             properties.load(inputStream);
         } catch (IOException e) {
-            throw new ElementProjectException(e);
+            throw new TechnicalProjectException(e);
         }
         return properties;
     }
