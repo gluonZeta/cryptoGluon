@@ -43,13 +43,32 @@
           <groupId>org.projectlombok</groupId>
           <artifactId>lombok</artifactId>
           <version>1.18.36</version>
-          <scope>provided</scope>
       </dependency>
 
   </dependencies>
 
   <build>
       <plugins>
+
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-jar-plugin</artifactId>
+              <version>3.4.2</version>
+              <configuration>
+                  <archive>
+                      <manifest>
+                          <!-- Classe main -->
+                          <mainClass>gluon.projects.Main</mainClass>
+                          <!-- Ajoute les dépendances au Class-Path -->
+                          <addClasspath>true</addClasspath>
+                          <!-- Préfixe vers le dossier des libs -->
+                          <classpathPrefix>lib/</classpathPrefix>
+                      </manifest>
+                  </archive>
+              </configuration>
+          </plugin>
+
+
           <plugin>
               <groupId>org.jacoco</groupId>
               <artifactId>jacoco-maven-plugin</artifactId>
