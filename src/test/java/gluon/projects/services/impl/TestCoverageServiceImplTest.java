@@ -13,4 +13,9 @@ class TestCoverageServiceImplTest {
     void addFunction() {
         assertEquals(7, testCoverageService.addFunction(3,4));
     }
+
+    @Test
+    void multiplyFunction() {
+        assertEquals(30, testCoverageService.multiplyFunction(5,6));
+    }
 }
