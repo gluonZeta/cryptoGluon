@@ -24,7 +24,7 @@ public class RestApiUtility {
 
         try {
             httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e) {
+        } catch (Exception e) {
             Thread.currentThread().interrupt();
             throw new TechnicalException(e);
         }
