@@ -1,5 +1,6 @@
 package gluon.projects.utilities;
 
+import gluon.projects.exceptions.TechnicalException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,5 +21,10 @@ class RestApiUtilityTest {
     void sendRestApiRequest() {
         String binanceApiResponse = RestApiUtility.sendRestApiRequest(this.properties.getProperty("apibinanceurl") + "/ping");
         assertEquals("{}", binanceApiResponse);
+
+
+        assertThrows(TechnicalException.class, () -> {
+            RestApiUtility.sendRestApiRequest("https://hgb.binance.com/api/v3");
+        });
     }
 }
