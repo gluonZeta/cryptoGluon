@@ -4,6 +4,7 @@ import gluon.projects.exceptions.TechnicalException;
 import gluon.projects.services.SymbolWriter;
 
 import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,11 +20,7 @@ public class FileSymbolWriter implements SymbolWriter {
 
     @Override
     public void write(String symbol) {
-        try (BufferedWriter writer = Files.newBufferedWriter(
-                file,
-                StandardOpenOption.CREATE,
-                StandardOpenOption.APPEND
-        )) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file.toFile(), true))) {
             writer.write(symbol);
             writer.newLine();
         } catch (IOException e) {
