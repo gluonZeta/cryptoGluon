@@ -17,8 +17,8 @@ class SymbolCryptoServiceImplTest {
     void getFreshListSymbol() {
         SymbolCryptoService symbolCryptoService = new SymbolCryptoServiceImpl();
         List<String> symbols = symbolCryptoService.getFreshListSymbol();
-        logger.info("Size of symbols tab: %s", symbols.size());
-        logger.info("Symbol example: %d", symbols.get(130));
+        logger.info("Size of symbols tab: {}", symbols.size());
+        logger.info("Symbol example: {}", symbols.get(130));
         assertTrue(symbols.size() > 10);
     }
 

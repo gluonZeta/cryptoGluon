@@ -24,7 +24,6 @@ class RestApiUtilityTest {
 
 
         assertThrows(TechnicalException.class, () -> {
-            //RestApiUtility.sendRestApiRequest("https://api.binance.com/api/v38");
             RestApiUtility.sendRestApiRequest("https://xxx");
         });
     }
