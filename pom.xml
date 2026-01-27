@@ -103,6 +103,7 @@
               <configuration>
                   <excludes>
                       <exclude>**/Main.*</exclude>
+                      <exclude>**/FileSymbolWriterImpl.*</exclude>
                   </excludes>
               </configuration>
               <executions>
