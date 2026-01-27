@@ -1,15 +1,13 @@
 package gluon.projects.services.impl;
 
-import gluon.projects.exceptions.TechnicalException;
 import gluon.projects.services.SymbolCryptoService;
+import gluon.projects.services.SymbolWriter;
 import gluon.projects.utilities.FileUtility;
 import gluon.projects.utilities.RestApiUtility;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -20,10 +18,13 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
 
     private String listSymbolFile;
 
-    public SymbolCryptoServiceImpl() {
+    SymbolWriter symbolWriter;
+
+    public SymbolCryptoServiceImpl(SymbolWriter symbolWriter) {
         Properties properties = FileUtility.getPropertiesByFileName("application.properties");
         this.mainUrlApiBinance = properties.getProperty("apibinanceurl");
         this.listSymbolFile = properties.getProperty("listsymbolfile");
+        this.symbolWriter = symbolWriter;
     }
 
     @Override
@@ -82,20 +83,7 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
     }
 
     private void writeSymbolInFile(String symbol) {
-        FileWriter writer = null;
-        try {
-            writer = new FileWriter(this.listSymbolFile, true);
-        } catch (IOException e) {
-            throw new TechnicalException(e);
-        }
-        BufferedWriter buffer = new BufferedWriter(writer);
-        try {
-            buffer.write(symbol);
-            buffer.newLine();
-            buffer.close();
-        } catch (IOException e) {
-            throw new TechnicalException(e);
-        }
+        symbolWriter.write(symbol);
     }
 
 }
