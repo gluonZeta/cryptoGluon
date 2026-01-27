@@ -102,8 +102,8 @@
               <version>${jacoco.version}</version>
               <configuration>
                   <excludes>
-                      <exclude>**/Main.*</exclude>
-                      <exclude>**/FileSymbolWriterImpl.*</exclude>
+                      <exclude>**/Main.class</exclude>
+                      <exclude>**/FileSymbolWriterImpl.class</exclude>
                   </excludes>
               </configuration>
               <executions>
