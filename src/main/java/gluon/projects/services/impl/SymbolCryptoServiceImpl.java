@@ -14,8 +14,6 @@ import java.util.Properties;
 
 public class SymbolCryptoServiceImpl implements SymbolCryptoService {
 
-    private static final Logger logger = LoggerFactory.getLogger(SymbolCryptoServiceImpl.class);
-
     private String mainUrlApiBinance;
 
     public SymbolCryptoServiceImpl() {
