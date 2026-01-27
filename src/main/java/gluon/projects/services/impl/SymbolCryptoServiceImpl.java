@@ -92,7 +92,7 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
 
     private boolean dataHistoryLengthFilter(String symbol) {
         boolean result = false;
-        int yearLimit = 1;
+        int yearLimit = 2;
         int numberOfMonth = yearLimit * 12;
         JSONArray symbolHistoricalDataArray;
 
