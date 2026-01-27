@@ -6,15 +6,13 @@ import gluon.projects.services.SymbolWriter;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 
-public class FileSymbolWriter implements SymbolWriter {
+public class FileSymbolWriterImpl implements SymbolWriter {
 
     private final Path file;
 
-    public FileSymbolWriter(Path file) {
+    public FileSymbolWriterImpl(Path file) {
         this.file = file;
     }
 

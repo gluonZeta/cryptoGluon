@@ -17,7 +17,7 @@ class SymbolCryptoServiceImplTest {
 
     @Test
     void getFreshListSymbol() {
-        SymbolWriter symbolWriter = mock(FileSymbolWriter.class);
+        SymbolWriter symbolWriter = mock(FileSymbolWriterImpl.class);
         SymbolCryptoService symbolCryptoService = new SymbolCryptoServiceImpl(symbolWriter);
         List<String> symbols = symbolCryptoService.getFreshListSymbol();
         logger.info("Size of symbols tab: {}", symbols.size());

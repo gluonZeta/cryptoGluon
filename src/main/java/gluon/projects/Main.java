@@ -2,7 +2,7 @@ package gluon.projects;
 
 import gluon.projects.services.SymbolCryptoService;
 import gluon.projects.services.SymbolWriter;
-import gluon.projects.services.impl.FileSymbolWriter;
+import gluon.projects.services.impl.FileSymbolWriterImpl;
 import gluon.projects.services.impl.SymbolCryptoServiceImpl;
 import gluon.projects.utilities.FileUtility;
 import org.slf4j.Logger;
@@ -20,7 +20,7 @@ public class Main {
         logger.info( "Programme BEGIN ###############" );
         Properties properties = FileUtility.getPropertiesByFileName("application.properties");
         String listSymbolFile = properties.getProperty("listsymbolfile");
-        SymbolWriter symbolWriter = new FileSymbolWriter(Paths.get(listSymbolFile));
+        SymbolWriter symbolWriter = new FileSymbolWriterImpl(Paths.get(listSymbolFile));
         SymbolCryptoService symbolCryptoService = new SymbolCryptoServiceImpl(symbolWriter);
         List<String> symbols = symbolCryptoService.getFreshListSymbol();
         logger.info( "Programme END #################" );

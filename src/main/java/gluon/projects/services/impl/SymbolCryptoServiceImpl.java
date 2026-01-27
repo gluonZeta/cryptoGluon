@@ -7,7 +7,6 @@ import gluon.projects.utilities.RestApiUtility;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -16,14 +15,12 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
 
     private String mainUrlApiBinance;
 
-    private String listSymbolFile;
-
     SymbolWriter symbolWriter;
 
     public SymbolCryptoServiceImpl(SymbolWriter symbolWriter) {
         Properties properties = FileUtility.getPropertiesByFileName("application.properties");
         this.mainUrlApiBinance = properties.getProperty("apibinanceurl");
-        this.listSymbolFile = properties.getProperty("listsymbolfile");
+
         this.symbolWriter = symbolWriter;
     }
 
@@ -49,7 +46,7 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
                     && isMarginTradingAllowed
                     && filterStringSymbol(symbol)) {
                 symbolList.add(symbol);
-                this.writeSymbolInFile(symbol);
+                this.symbolWriter.write(symbol);
             }
         }
 
@@ -80,10 +77,6 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
             allow = true;
         }
         return allow;
-    }
-
-    private void writeSymbolInFile(String symbol) {
-        symbolWriter.write(symbol);
     }
 
 }
