@@ -7,9 +7,7 @@ import gluon.projects.utilities.RestApiUtility;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 public class SymbolCryptoServiceImpl implements SymbolCryptoService {
 
@@ -44,7 +42,8 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
             isMarginTradingAllowed = (boolean) symbolInfo.get("isMarginTradingAllowed");
             if(!this.excludedSymbol().contains(symbol)
                     && isMarginTradingAllowed
-                    && filterStringSymbol(symbol)) {
+                    && filterStringSymbol(symbol)
+                    && dataHistoryLengthFilter(symbol)) {
                 symbolList.add(symbol);
                 this.symbolWriter.write(symbol);
             }
@@ -77,6 +76,36 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
             allow = true;
         }
         return allow;
+    }
+
+    private String buildUrlForHistoryLimit(String symbol,int yearLimit) {
+        String interval = "1M";
+        long endTime = System.currentTimeMillis();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date(endTime));
+        calendar.add(Calendar.YEAR, -yearLimit);
+        long startTime = calendar.getTimeInMillis();
+
+        return String.format("/klines?symbol=%s&interval=%s&startTime=%d&endTime=%d",
+                symbol, interval, startTime, endTime);
+    }
+
+    private boolean dataHistoryLengthFilter(String symbol) {
+        boolean result = false;
+        int yearLimit = 1;
+        int numberOfMonth = yearLimit * 12;
+        JSONArray symbolHistoricalDataArray;
+
+        String urlHistoricalData = this.mainUrlApiBinance +
+                this.buildUrlForHistoryLimit(symbol, yearLimit);
+
+        String symbolHistoricalData = RestApiUtility.sendRestApiRequest(urlHistoricalData);
+        symbolHistoricalDataArray = new JSONArray(symbolHistoricalData);
+
+        if(symbolHistoricalDataArray.length() >= (numberOfMonth-1)) {
+            result = true;
+        }
+        return result;
     }
 
 }
