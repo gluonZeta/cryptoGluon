@@ -40,7 +40,6 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
             symbol = (String) symbolInfo.get("symbol");
             isMarginTradingAllowed = (boolean) symbolInfo.get("isMarginTradingAllowed");
             if(!this.excludedSymbol().contains(symbol)
-                    && isMarginTradingAllowed
                     && filterStringSymbol(symbol)
                     && dataHistoryLengthFilter(symbol)) {
                 symbolList.add(symbol.substring(0, symbol.length() - 1) + "C");
@@ -57,15 +56,15 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
 
     private List<String> excludedSymbol() {
         List<String> symbolExclus = new ArrayList<>();
-        symbolExclus.add("TUSDUSDT");
-        symbolExclus.add("FDUSDUSDT");
+        symbolExclus.add("TUSDUSDC");
+        symbolExclus.add("FDUSDUSDC");
         return symbolExclus;
     }
 
     private boolean filterStringSymbol(String symbol) {
         boolean allow = false;
-        if(symbol.endsWith("USDT")
-                && !symbol.startsWith("USDT")
+        if(symbol.endsWith("USDC")
+                && !symbol.startsWith("USDC")
                 && !symbol.contains("DOWN")
                 && !symbol.contains("BULL")
                 && !symbol.contains("BEAR")
