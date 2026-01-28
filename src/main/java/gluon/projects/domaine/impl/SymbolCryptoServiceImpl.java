@@ -56,15 +56,15 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
 
     private List<String> excludedSymbol() {
         List<String> symbolExclus = new ArrayList<>();
-        symbolExclus.add("TUSDUSDC");
-        symbolExclus.add("FDUSDUSDC");
+        symbolExclus.add("TUSDUSDT");
+        symbolExclus.add("FDUSDUSDT");
         return symbolExclus;
     }
 
     private boolean filterStringSymbol(String symbol) {
         boolean allow = false;
-        if(symbol.endsWith("USDC")
-                && !symbol.startsWith("USDC")
+        if(symbol.endsWith("USDT")
+                && !symbol.startsWith("USDT")
                 && !symbol.contains("DOWN")
                 && !symbol.contains("BULL")
                 && !symbol.contains("BEAR")
