@@ -6,6 +6,7 @@ import gluon.projects.infra.FileStorageService;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class FileStorageServiceImpl implements FileStorageService {
@@ -25,4 +26,15 @@ public class FileStorageServiceImpl implements FileStorageService {
             throw new TechnicalException(e);
         }
     }
+
+    @Override
+    public void cleanFolder() {
+        try {
+            Files.delete(file);
+        } catch (IOException e) {
+            throw new TechnicalException(e);
+        }
+    }
+
+
 }

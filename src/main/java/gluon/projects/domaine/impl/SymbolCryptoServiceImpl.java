@@ -27,6 +27,7 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
 
     @Override
     public List<String> getFreshListSymbol() {
+        fileStorageService.cleanFolder();
 
         JSONObject symbolInfo;
         String symbol;
@@ -90,6 +91,7 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
 
             if(closePrice > priceThreshold) {
                 logger.info("{} ------- {}", symbol, closePrice);
+                logger.info(symbolHistoricalDataArray.toString());
                 result = true;
             }
         }
