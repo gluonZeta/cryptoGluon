@@ -1,18 +1,18 @@
-package gluon.projects.services.impl;
+package gluon.projects.infra.impl;
 
 import gluon.projects.exceptions.TechnicalException;
-import gluon.projects.services.SymbolWriter;
+import gluon.projects.infra.FileStorageService;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class FileSymbolWriterImpl implements SymbolWriter {
+public class FileStorageServiceImpl implements FileStorageService {
 
     private final Path file;
 
-    public FileSymbolWriterImpl(Path file) {
+    public FileStorageServiceImpl(Path file) {
         this.file = file;
     }
 

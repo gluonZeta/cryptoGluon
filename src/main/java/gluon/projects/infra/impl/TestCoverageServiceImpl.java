@@ -1,6 +1,6 @@
-package gluon.projects.services.impl;
+package gluon.projects.infra.impl;
 
-import gluon.projects.services.TestCoverageService;
+import gluon.projects.infra.TestCoverageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

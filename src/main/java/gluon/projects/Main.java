@@ -1,9 +1,11 @@
 package gluon.projects;
 
-import gluon.projects.services.SymbolCryptoService;
-import gluon.projects.services.SymbolWriter;
-import gluon.projects.services.impl.FileSymbolWriterImpl;
-import gluon.projects.services.impl.SymbolCryptoServiceImpl;
+import gluon.projects.domaine.SymbolCryptoService;
+import gluon.projects.infra.BinanceSymbolService;
+import gluon.projects.infra.FileStorageService;
+import gluon.projects.infra.impl.BinanceSymbolServiceImpl;
+import gluon.projects.infra.impl.FileStorageServiceImpl;
+import gluon.projects.domaine.impl.SymbolCryptoServiceImpl;
 import gluon.projects.utilities.FileUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +22,9 @@ public class Main {
         logger.info( "Programme BEGIN ###############" );
         Properties properties = FileUtility.getPropertiesByFileName("application.properties");
         String listSymbolFile = properties.getProperty("listsymbolfile");
-        SymbolWriter symbolWriter = new FileSymbolWriterImpl(Paths.get(listSymbolFile));
-        SymbolCryptoService symbolCryptoService = new SymbolCryptoServiceImpl(symbolWriter);
+        FileStorageService fileStorageService = new FileStorageServiceImpl(Paths.get(listSymbolFile));
+        BinanceSymbolService binanceSymbolService = new BinanceSymbolServiceImpl();
+        SymbolCryptoService symbolCryptoService = new SymbolCryptoServiceImpl(fileStorageService, binanceSymbolService);
         List<String> symbols = symbolCryptoService.getFreshListSymbol();
         logger.info( "Programme END #################" );
     }

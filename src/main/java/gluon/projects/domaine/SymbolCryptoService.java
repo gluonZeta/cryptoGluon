@@ -1,4 +1,4 @@
-package gluon.projects.services;
+package gluon.projects.domaine;
 
 import java.util.List;
 
