@@ -22,8 +22,10 @@ public class Main {
         logger.info( "Programme BEGIN ###############" );
         Properties properties = FileUtility.getPropertiesByFileName("application.properties");
         String listSymbolFile = properties.getProperty("listsymbolfile");
+
         FileStorageService fileStorageService = new FileStorageServiceImpl(Paths.get(listSymbolFile));
         BinanceSymbolService binanceSymbolService = new BinanceSymbolServiceImpl();
+
         SymbolCryptoService symbolCryptoService = new SymbolCryptoServiceImpl(fileStorageService, binanceSymbolService);
         List<String> symbols = symbolCryptoService.getFreshListSymbol();
         logger.info( "Programme END #################" );

@@ -24,11 +24,11 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
     @Override
     public List<String> getFreshListSymbol() {
 
-        JSONArray symbols = this.binanceSymbolService.getExchangeInfos();
         JSONObject symbolInfo;
         String symbol;
         boolean isMarginTradingAllowed = false;
         List<String> symbolList = new ArrayList<>();
+        JSONArray symbols = this.binanceSymbolService.getExchangeInfos();
 
         for(int i = 0; i < symbols.length(); i++) {
             symbolInfo = new JSONObject(symbols.get(i).toString());
@@ -42,7 +42,6 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
                 this.fileStorageService.write(symbol);
             }
         }
-
         return symbolList;
     }
 
