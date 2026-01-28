@@ -14,9 +14,9 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
 
     private static final Logger logger = LoggerFactory.getLogger(SymbolCryptoServiceImpl.class);
 
-    private FileStorageService fileStorageService;
+    private final FileStorageService fileStorageService;
 
-    private BinanceSymbolService binanceSymbolService;
+    private final BinanceSymbolService binanceSymbolService;
 
     public SymbolCryptoServiceImpl(
             FileStorageService fileStorageService,
@@ -41,6 +41,7 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
             isMarginTradingAllowed = (boolean) symbolInfo.get("isMarginTradingAllowed");
             if(!this.excludedSymbol().contains(symbol)
                     && filterStringSymbol(symbol)
+                    && isMarginTradingAllowed
                     && dataHistoryLengthFilter(symbol)) {
                 symbolList.add(symbol);
                 this.fileStorageService.write(symbol);

@@ -38,7 +38,7 @@ public class BinanceSymbolServiceImpl implements BinanceSymbolService {
         String urlHistoricalData = this.mainUrlApiBinance +
                 this.buildUrlForHistoryLimit(symbol, yearLimit);
 
-        logger.info("URL: " + urlHistoricalData);
+        logger.info("URL: {}", urlHistoricalData);
         String symbolHistoricalData = RestApiUtility.sendRestApiRequest(urlHistoricalData);
         return(new JSONArray(symbolHistoricalData));
     }
