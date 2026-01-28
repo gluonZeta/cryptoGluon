@@ -77,7 +77,7 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
 
     private boolean dataHistoryLengthFilter(String symbol) {
         boolean result = false;
-        int yearLimit = 2;
+        int yearLimit = 1;
         int numberOfMonth = yearLimit * 12;
         float priceThreshold = 0.005f;
         float closePrice;
