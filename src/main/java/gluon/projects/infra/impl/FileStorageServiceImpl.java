@@ -30,7 +30,7 @@ public class FileStorageServiceImpl implements FileStorageService {
     @Override
     public void cleanFolder() {
         try {
-            Files.delete(file);
+            Files.deleteIfExists(file);
         } catch (IOException e) {
             throw new TechnicalException(e);
         }
