@@ -18,8 +18,7 @@
       <slf4j.version>2.0.17</slf4j.version>
       <logback.version>1.5.26</logback.version>
       <sonar.exclusions>
-          **/Main.*,
-          **/services/impl/FileSymbolWriterImpl.*
+          **/Main.*
       </sonar.exclusions> <!-- pour une exclusion de la classe dans sonarqube -->
   </properties>
 
@@ -106,7 +105,6 @@
               <configuration>
                   <excludes>
                       <exclude>**/Main.*</exclude>
-                      <exclude>**/services/impl/FileSymbolWriterImpl.*</exclude>
                   </excludes>
               </configuration>
               <executions>
