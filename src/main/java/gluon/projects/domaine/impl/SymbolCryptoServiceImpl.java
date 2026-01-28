@@ -81,10 +81,12 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
         int numberOfMonth = yearLimit * 12;
         float priceThreshold = 0.05f;
         float closePrice;
+        JSONArray historicalDataElement;
 
         JSONArray symbolHistoricalDataArray = this.binanceSymbolService.getSymbolHistoricalData(symbol,yearLimit);
         if(symbolHistoricalDataArray.length() >= (numberOfMonth-1)) {
-            closePrice = Float.parseFloat((String) symbolHistoricalDataArray.get(symbolHistoricalDataArray.length() - 1));
+            historicalDataElement = (JSONArray) symbolHistoricalDataArray.get(symbolHistoricalDataArray.length()-1);
+            closePrice = Float.parseFloat((String) historicalDataElement.get(4));
 
             if(closePrice > priceThreshold) {
                 logger.info("{} ------- {}", symbol, closePrice);
