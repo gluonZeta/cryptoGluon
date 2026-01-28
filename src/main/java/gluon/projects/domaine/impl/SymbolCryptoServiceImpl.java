@@ -42,8 +42,8 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
             if(!this.excludedSymbol().contains(symbol)
                     && filterStringSymbol(symbol)
                     && dataHistoryLengthFilter(symbol)) {
-                symbolList.add(symbol.substring(0, symbol.length() - 1) + "C");
-                this.fileStorageService.write(symbol.substring(0, symbol.length() - 1) + "C");
+                symbolList.add(symbol);
+                this.fileStorageService.write(symbol);
             }
         }
         return symbolList;
