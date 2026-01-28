@@ -5,10 +5,16 @@ import gluon.projects.utilities.FileUtility;
 import gluon.projects.utilities.RestApiUtility;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Properties;
 
 public class BinanceSymbolServiceImpl implements BinanceSymbolService {
+
+    private static final Logger logger = LoggerFactory.getLogger(BinanceSymbolServiceImpl.class);
 
     private final String mainUrlApiBinance;
 
@@ -32,6 +38,7 @@ public class BinanceSymbolServiceImpl implements BinanceSymbolService {
         String urlHistoricalData = this.mainUrlApiBinance +
                 this.buildUrlForHistoryLimit(symbol, yearLimit);
 
+        logger.info("URL: " + urlHistoricalData);
         String symbolHistoricalData = RestApiUtility.sendRestApiRequest(urlHistoricalData);
         return(new JSONArray(symbolHistoricalData));
     }

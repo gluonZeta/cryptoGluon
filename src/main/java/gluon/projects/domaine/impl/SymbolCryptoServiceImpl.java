@@ -79,7 +79,7 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
         boolean result = false;
         int yearLimit = 2;
         int numberOfMonth = yearLimit * 12;
-        float priceThreshold = 0.05f;
+        float priceThreshold = 0.005f;
         float closePrice;
         JSONArray historicalDataElement;
 
@@ -90,7 +90,6 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
 
             if(closePrice > priceThreshold) {
                 logger.info("{} ------- {}", symbol, closePrice);
-                logger.info(symbolHistoricalDataArray.toString());
                 result = true;
             }
         }
