@@ -42,7 +42,7 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
                     && isMarginTradingAllowed
                     && filterStringSymbol(symbol)
                     && dataHistoryLengthFilter(symbol)) {
-                symbolList.add(symbol);
+                symbolList.add(symbol.substring(0, symbol.length() - 1) + "C");
                 this.fileStorageService.write(symbol);
             }
         }
