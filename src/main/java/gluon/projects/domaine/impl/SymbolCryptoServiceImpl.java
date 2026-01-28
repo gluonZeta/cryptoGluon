@@ -5,10 +5,14 @@ import gluon.projects.infra.BinanceSymbolService;
 import gluon.projects.infra.FileStorageService;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
 public class SymbolCryptoServiceImpl implements SymbolCryptoService {
+
+    private static final Logger logger = LoggerFactory.getLogger(SymbolCryptoServiceImpl.class);
 
     private FileStorageService fileStorageService;
 
@@ -75,9 +79,17 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
         boolean result = false;
         int yearLimit = 2;
         int numberOfMonth = yearLimit * 12;
+        float priceThreshold = 0.05f;
+        float closePrice;
+
         JSONArray symbolHistoricalDataArray = this.binanceSymbolService.getSymbolHistoricalData(symbol,yearLimit);
         if(symbolHistoricalDataArray.length() >= (numberOfMonth-1)) {
-            result = true;
+            closePrice = Float.parseFloat((String) symbolHistoricalDataArray.get(symbolHistoricalDataArray.length() - 1));
+
+            if(closePrice > priceThreshold) {
+                logger.info("{} ------- {}", symbol, closePrice);
+                result = true;
+            }
         }
         return result;
     }
