@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
 
@@ -27,7 +28,12 @@ public class Main {
         BinanceSymbolService binanceSymbolService = new BinanceSymbolServiceImpl();
 
         SymbolCryptoService symbolCryptoService = new SymbolCryptoServiceImpl(fileStorageService, binanceSymbolService);
-        List<String> symbols = symbolCryptoService.getFreshListSymbol();
+        List<String> symbols = symbolCryptoService.getOldListSymbol();
+        logger.info("Size equal: {}", symbols.size());
+
+        int aleatoire = ThreadLocalRandom.current().nextInt(0, symbols.size());
+        logger.info("exampl crypto: {}", symbols.get(aleatoire));
+
         logger.info( "Programme END #################" );
     }
 }

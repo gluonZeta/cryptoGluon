@@ -52,13 +52,14 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
 
     @Override
     public List<String> getOldListSymbol() {
-        return List.of();
+        return this.fileStorageService.readSymbolExistingFile();
     }
 
     private List<String> excludedSymbol() {
         List<String> symbolExclus = new ArrayList<>();
         symbolExclus.add("TUSDUSDC");
         symbolExclus.add("FDUSDUSDC");
+        symbolExclus.add("BROCCOLI714USDC");
         return symbolExclus;
     }
 
