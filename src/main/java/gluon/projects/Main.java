@@ -33,8 +33,8 @@ public class Main {
 
             while ((line = reader.readLine()) != null) {
                 if(currentIndex == randomIndex) {
-                    logger.info("LINE: {}", line);
-                    logger.info("LINE value: {}", currentIndex);
+                    logger.info("Symbol: {}", line);
+                    logger.info("Position: {}", currentIndex);
                     break;
                 }
                 currentIndex++;
