@@ -2,10 +2,15 @@ package gluon.projects;
 
 import gluon.projects.domaine.SymbolCryptoService;
 import gluon.projects.infra.BinanceSymbolService;
+import gluon.projects.infra.BinanceWebsocketService;
 import gluon.projects.infra.FileStorageService;
+import gluon.projects.infra.IOFService;
 import gluon.projects.infra.impl.BinanceSymbolServiceImpl;
+import gluon.projects.infra.impl.BinanceWebsocketServiceImpl;
 import gluon.projects.infra.impl.FileStorageServiceImpl;
 import gluon.projects.domaine.impl.SymbolCryptoServiceImpl;
+import gluon.projects.infra.impl.IOFServiceImpl;
+import gluon.projects.model.IndicatorsOrderFlow;
 import gluon.projects.utilities.FileUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,12 +32,43 @@ public class Main {
         FileStorageService fileStorageService = new FileStorageServiceImpl(Paths.get(listSymbolFile));
         BinanceSymbolService binanceSymbolService = new BinanceSymbolServiceImpl();
 
+
         SymbolCryptoService symbolCryptoService = new SymbolCryptoServiceImpl(fileStorageService, binanceSymbolService);
         List<String> symbols = symbolCryptoService.getOldListSymbol();
         logger.info("Size equal: {}", symbols.size());
 
+
+        /*
+        BinanceWebsocketService binanceWebsocketService;
+        for(String symbolLoop: symbols) {
+            binanceWebsocketService = new BinanceWebsocketServiceImpl(symbolLoop);
+            binanceWebsocketService.launchExchange();
+        }
+
+         */
+
+
+        /**
+         * Order flow
+         */
+        IndicatorsOrderFlow indicatorsOrderFlow = new IndicatorsOrderFlow();
+        IOFService iofService = new IOFServiceImpl();
+
+
+
+
+        //*****************************************************************************************************
         int aleatoire = ThreadLocalRandom.current().nextInt(0, symbols.size());
-        logger.info("exampl crypto: {}", symbols.get(aleatoire));
+
+        String symbolToProcess = symbols.get(aleatoire);
+        logger.info("exampl crypto: {}", symbolToProcess);
+        BinanceWebsocketService binanceWebsocketService = new BinanceWebsocketServiceImpl(symbolToProcess,indicatorsOrderFlow, iofService);
+        binanceWebsocketService.launchExchange();
+        //*****************************************************************************************************
+
+
+
+
 
         logger.info( "Programme END #################" );
     }
