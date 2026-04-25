@@ -34,7 +34,7 @@ public class Main {
 
 
         SymbolCryptoService symbolCryptoService = new SymbolCryptoServiceImpl(fileStorageService, binanceSymbolService);
-        List<String> symbols = symbolCryptoService.getOldListSymbol();
+        List<String> symbols = symbolCryptoService.getFreshListSymbol();
         logger.info("Size equal: {}", symbols.size());
 
 
