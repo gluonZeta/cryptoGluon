@@ -85,7 +85,7 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
 
     private boolean dataHistoryLengthFilter(String symbol) {
         boolean result = false;
-        int yearLimit = 1;
+        int yearLimit = 2;
         int numberOfMonth = yearLimit * 12;
         float priceThreshold = 0.005f;
         float closePrice;
@@ -96,7 +96,7 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
             historicalDataElement = (JSONArray) symbolHistoricalDataArray.get(symbolHistoricalDataArray.length()-1);
             closePrice = Float.parseFloat((String) historicalDataElement.get(4));
 
-            if((closePrice > priceThreshold) || allowedSymbolException("SHIBUSDC")) {
+            if((closePrice > priceThreshold) || allowedSymbolException(symbol)) {
                 logger.info("{} ------- {}", symbol, closePrice);
                 result = true;
             }
