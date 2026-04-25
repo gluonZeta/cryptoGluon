@@ -3,6 +3,8 @@ package gluon.projects.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 public class IndicatorsOrderFlow {
@@ -10,6 +12,8 @@ public class IndicatorsOrderFlow {
     private double bidsCumulPression = 0;
 
     private double asksCumulPression = 0;
+
+    private Date tradingTime;
 
     public void addBuyerVolume(double volume) {
         this.bidsCumulPression += volume;

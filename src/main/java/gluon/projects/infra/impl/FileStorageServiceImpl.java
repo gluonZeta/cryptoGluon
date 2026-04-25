@@ -21,9 +21,9 @@ public class FileStorageServiceImpl implements FileStorageService {
     }
 
     @Override
-    public void write(String symbol) {
+    public void write(String line) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file.toFile(), true))) {
-            writer.write(symbol);
+            writer.write(line);
             writer.newLine();
         } catch (IOException e) {
             throw new TechnicalException(e);

@@ -32,8 +32,6 @@ public class OrderFlowServiceImpl implements OrderFlowService {
     public void processOrderFlow(JSONObject orderFlowBinanceData) {
         fillOrderFlowData(orderFlowBinanceData);
         this.iofService.fillOrderFlowPression(this.indicatorsOrderFlow,this.orderFlowData);
-        logger.info(this.indicatorsOrderFlow.toString());
-        logger.info(orderFlowData.toString());
         orderFlowData.clearOrderFlowData();
     }
 

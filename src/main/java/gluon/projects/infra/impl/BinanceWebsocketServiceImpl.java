@@ -18,9 +18,9 @@ public class BinanceWebsocketServiceImpl implements BinanceWebsocketService {
 
     private final String symbol;
 
-    IndicatorsOrderFlow indicatorsOrderFlow;
+    private IndicatorsOrderFlow indicatorsOrderFlow;
 
-    IOFService iofService;
+    private IOFService iofService;
 
     public BinanceWebsocketServiceImpl(String symbol, IndicatorsOrderFlow indicatorsOrderFlow, IOFService iofService) {
         Properties properties = FileUtility.getPropertiesByFileName("application.properties");

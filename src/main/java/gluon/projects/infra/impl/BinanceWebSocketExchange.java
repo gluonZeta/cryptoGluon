@@ -36,7 +36,7 @@ public class BinanceWebSocketExchange extends WebSocketClient {
         JSONObject exchangeResponseData = new JSONObject(messageResponse);
         String streamDataResponseValue = (String) exchangeResponseData.get("stream");
         if(streamDataResponseValue.contains("trade")) {
-            logger.info("##### ORDER FLOW");
+            //logger.info("##### ORDER FLOW");
             orderFlowService.processOrderFlow((JSONObject) exchangeResponseData.get("data"));
         } else if (streamDataResponseValue.contains("depth")) {
             //logger.info("##### ORDER BOOOOOK");
