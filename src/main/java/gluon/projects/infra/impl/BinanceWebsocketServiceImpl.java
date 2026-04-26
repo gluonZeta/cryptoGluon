@@ -22,12 +22,19 @@ public class BinanceWebsocketServiceImpl implements BinanceWebsocketService {
 
     private IOFService iofService;
 
-    public BinanceWebsocketServiceImpl(String symbol, IndicatorsOrderFlow indicatorsOrderFlow, IOFService iofService) {
+    private IndicatorsOrderBook indicatorsOrderBook;
+
+    private IOBService iobService;
+
+    public BinanceWebsocketServiceImpl(String symbol, IndicatorsOrderFlow indicatorsOrderFlow, IOFService iofService
+            ,IndicatorsOrderBook indicatorsOrderBook, IOBService iobService) {
         Properties properties = FileUtility.getPropertiesByFileName("application.properties");
         this.websocketUrl = properties.getProperty("streambinancesocket");
         this.symbol = symbol;
         this.indicatorsOrderFlow = indicatorsOrderFlow;
         this.iofService = iofService;
+        this.indicatorsOrderBook = indicatorsOrderBook;
+        this.iobService = iobService;
     }
 
     @Override
@@ -37,10 +44,7 @@ public class BinanceWebsocketServiceImpl implements BinanceWebsocketService {
             /**
              * Partie Order book
              */
-            IndicatorsOrderBook indicatorsOrderBook = new IndicatorsOrderBook();
-            IOBService IOBService = new IOBServiceImpl(indicatorsOrderBook, symbol);
-
-            OrderBookService orderBookService = new OrderBookServiceImpl(IOBService);
+            OrderBookService orderBookService = new OrderBookServiceImpl(this.iobService);
 
 
 

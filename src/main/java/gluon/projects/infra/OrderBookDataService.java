@@ -5,6 +5,6 @@ import org.json.JSONArray;
 
 public interface OrderBookDataService {
 
-    OrderBookData fillOrderDataBookBidsAndAsks(JSONArray bids, JSONArray asks);
+    OrderBookData createAndFillOrderDataBookBidsAndAsks(JSONArray bids, JSONArray asks);
 
 }

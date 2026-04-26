@@ -27,6 +27,6 @@ public class OrderBookServiceImpl implements OrderBookService {
         JSONObject orderBookResponseData = exchangeResponseData.getJSONObject("data");
         JSONArray bids = orderBookResponseData.getJSONArray("bids");
         JSONArray asks = orderBookResponseData.getJSONArray("asks");
-        this.IOBService.processIndicators(this.orderBookDataService.fillOrderDataBookBidsAndAsks(bids,asks));
+        this.IOBService.processIndicators(this.orderBookDataService.createAndFillOrderDataBookBidsAndAsks(bids,asks));
     }
 }

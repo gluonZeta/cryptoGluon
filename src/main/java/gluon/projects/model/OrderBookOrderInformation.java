@@ -9,24 +9,24 @@ public class OrderBookOrderInformation {
 
     private float price;
 
-    private float qantity;
+    private float quantity;
 
     public OrderBookOrderInformation() {}
 
     public OrderBookOrderInformation(float price, float quantity) {
         this.price = price;
-        this.qantity = quantity;
+        this.quantity = quantity;
     }
 
     public float total() {
-        return price * qantity;
+        return price * quantity;
     }
 
     @Override
     public String toString() {
         return "OrderBookOrderInformation{" +
                 "price = " + price +
-                ", qantity = " + qantity +
+                ", qantity = " + quantity +
                 '}';
     }
 

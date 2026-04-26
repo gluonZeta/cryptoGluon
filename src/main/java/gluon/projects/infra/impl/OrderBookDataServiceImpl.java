@@ -10,7 +10,7 @@ import java.util.List;
 
 public class OrderBookDataServiceImpl implements OrderBookDataService {
     @Override
-    public OrderBookData fillOrderDataBookBidsAndAsks(JSONArray bids, JSONArray asks) {
+    public OrderBookData createAndFillOrderDataBookBidsAndAsks(JSONArray bids, JSONArray asks) {
         OrderBookData orderBookData = new OrderBookData();
         List<OrderBookOrderInformation> bidsElements = new ArrayList<>();
         List<OrderBookOrderInformation> asksElements = new ArrayList<>();

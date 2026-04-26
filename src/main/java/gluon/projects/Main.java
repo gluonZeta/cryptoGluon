@@ -1,12 +1,10 @@
 package gluon.projects;
 
 import gluon.projects.domaine.SymbolCryptoService;
-import gluon.projects.infra.BinanceSymbolService;
-import gluon.projects.infra.BinanceWebsocketService;
-import gluon.projects.infra.FileStorageService;
-import gluon.projects.infra.IOFService;
+import gluon.projects.infra.*;
 import gluon.projects.infra.impl.*;
 import gluon.projects.domaine.impl.SymbolCryptoServiceImpl;
+import gluon.projects.model.IndicatorsOrderBook;
 import gluon.projects.model.IndicatorsOrderFlow;
 import gluon.projects.utilities.FileUtility;
 import org.slf4j.Logger;
@@ -26,6 +24,7 @@ public class Main {
         Properties properties = FileUtility.getPropertiesByFileName("application.properties");
         String listSymbolFile = properties.getProperty("listsymbolfile");
         String orderFlowData = properties.getProperty("orderFlowData");
+        String orderBookData = properties.getProperty("orderBookData");
 
         FileStorageService fileStorageService = new FileStorageServiceImpl(Paths.get(listSymbolFile));
         BinanceSymbolService binanceSymbolService = new BinanceSymbolServiceImpl();
@@ -45,20 +44,20 @@ public class Main {
 
          */
 
-
-        /**
-         * Order flow
-         */
         for(String symbolToProcess: symbols) {
             IndicatorsOrderFlow indicatorsOrderFlow = new IndicatorsOrderFlow();
             IOFService iofService = new IOFServiceImpl();
+
+            IndicatorsOrderBook indicatorsOrderBook = new IndicatorsOrderBook();
+            IOBService iobService = new IOBServiceImpl(indicatorsOrderBook, symbolToProcess);
             /*
             int aleatoire = ThreadLocalRandom.current().nextInt(0, symbols.size());
 
             String symbolToProcess = symbols.get(aleatoire);
              */
             logger.info("exampl crypto: {}", symbolToProcess);
-            BinanceWebsocketService binanceWebsocketService = new BinanceWebsocketServiceImpl(symbolToProcess,indicatorsOrderFlow, iofService);
+            BinanceWebsocketService binanceWebsocketService = new BinanceWebsocketServiceImpl(symbolToProcess
+                    ,indicatorsOrderFlow, iofService, indicatorsOrderBook, iobService);
             binanceWebsocketService.launchExchange();
 
             String fileName = orderFlowData + symbolToProcess + ".csv";
@@ -66,6 +65,14 @@ public class Main {
             OrderFlowFilCsv orderFlowFilCsv = new OrderFlowFilCsv(symbolToProcess,indicatorsOrderFlow, iofService, fileStorageSymbolService);
             Thread thread = new Thread(orderFlowFilCsv);
             thread.start();
+
+
+            String orderBookFileName = orderBookData + symbolToProcess + ".csv";
+            FileStorageService orderBookFileStorageSymbolService = new FileStorageServiceImpl(Paths.get(orderBookFileName));
+            OrderBookFilCsv orderBookFilCsv = new OrderBookFilCsv(symbolToProcess,indicatorsOrderBook,iobService,orderBookFileStorageSymbolService);
+            Thread threadOb = new Thread(orderBookFilCsv);
+            threadOb.start();
+
         }
 
 
