@@ -4,6 +4,7 @@ import gluon.projects.infra.IOBService;
 import gluon.projects.model.IndicatorsOrderBook;
 import gluon.projects.model.OrderBookData;
 import gluon.projects.model.OrderBookOrderInformation;
+import gluon.projects.model.VariationDirection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +21,7 @@ public class IOBServiceImpl implements IOBService {
 
     private String symbol;
 
-    private float orderBookImbalanceThreshold = 0.5f;
+    private double orderBookImbalanceThreshold = 0.005f;
 
     public IOBServiceImpl(IndicatorsOrderBook indicatorsOrderBook, String symbol) {
         this.indicatorsOrderBook = indicatorsOrderBook;
@@ -29,12 +30,71 @@ public class IOBServiceImpl implements IOBService {
 
     @Override
     public void processIndicators(OrderBookData orderBookData) {
-        this.computeVolumeMvt(orderBookData);
+        if(orderBookDataTMoins1 != null) {
+            this.computeVolumeMvt(orderBookData);
+            this.computeVariation(orderBookData);
+            this.computeSpread(orderBookData);
+            this.computeOrderLimitVolume(orderBookData);
+        }
+        orderBookDataTMoins1 = orderBookData;
     }
+
+    public void computeOrderLimitVolume(OrderBookData orderBookDataT) {
+        double bestBidT = orderBookDataT.getBids().get(0).getPrice();
+        double bestAskT = orderBookDataT.getAsks().get(0).getPrice();
+
+        double bidsCumulValue = 0;
+        double asksCumulValue = 0;
+
+        // Bids
+        double limitBidPrice = bestBidT * (1-orderBookImbalanceThreshold);
+        for(OrderBookOrderInformation orderBookOrderInformation: orderBookDataT.getBids()) {
+            if(orderBookOrderInformation.getPrice() > limitBidPrice) {
+                bidsCumulValue += orderBookOrderInformation.total();
+            }
+        }
+        this.indicatorsOrderBook.setBidsOrderLimitVolume(bidsCumulValue);
+
+        // Asks
+        double limitAskPrice = bestAskT * (1+orderBookImbalanceThreshold);
+        for(OrderBookOrderInformation askInformation: orderBookDataT.getAsks()) {
+            if(askInformation.getPrice() < limitAskPrice) {
+                asksCumulValue += askInformation.total();
+            }
+        }
+        this.indicatorsOrderBook.setAsksOrderLimitVolume(asksCumulValue);
+    }
+
+
+    private void computeSpread(OrderBookData orderBookDataT) {
+        double bestBidT = orderBookDataT.getBids().get(0).getPrice();
+        double bestAskT = orderBookDataT.getAsks().get(0).getPrice();
+        indicatorsOrderBook.setSpreadValue(bestAskT-bestBidT);
+    }
+
+    private void computeVariation(OrderBookData orderBookDataT) {
+        double bestBidTMoins1 = this.orderBookDataTMoins1.getBids().get(0).getPrice();
+        double bestBidT = orderBookDataT.getBids().get(0).getPrice();
+
+        double bestAskTMoins1 = this.orderBookDataTMoins1.getAsks().get(0).getPrice();
+        double bestAskT = orderBookDataT.getAsks().get(0).getPrice();
+
+        indicatorsOrderBook.setVariationDirection(VariationDirection.RAS);
+
+        if(bestBidTMoins1 > bestBidT) {
+            indicatorsOrderBook.setVariationDirection(VariationDirection.DOWN);
+            indicatorsOrderBook.setVariationValue((bestBidTMoins1-bestBidT)*100/bestBidTMoins1);
+        }
+        if(bestAskTMoins1 < bestAskT) {
+            indicatorsOrderBook.setVariationDirection(VariationDirection.UP);
+            indicatorsOrderBook.setVariationValue((bestAskT-bestAskTMoins1)*100/bestAskTMoins1);
+        }
+    }
+
 
     private void computeOrderBookThresholdImbalance(OrderBookData orderBookData) {
         // Bids
-        float limitBidPrice = orderBookData.getBids().get(0).getPrice() * (1-orderBookImbalanceThreshold);
+        double limitBidPrice = orderBookData.getBids().get(0).getPrice() * (1-orderBookImbalanceThreshold);
         for(OrderBookOrderInformation orderBookOrderInformation: orderBookData.getBids()) {
             if(orderBookOrderInformation.getPrice() > limitBidPrice) {
                 this.indicatorsOrderBook.addBidsOrderBookImbalanceQtt(orderBookOrderInformation.getQuantity());
@@ -42,7 +102,7 @@ public class IOBServiceImpl implements IOBService {
         }
 
         // Asks
-        float limitAskPrice = orderBookData.getAsks().get(0).getPrice() * (1+orderBookImbalanceThreshold);
+        double limitAskPrice = orderBookData.getAsks().get(0).getPrice() * (1+orderBookImbalanceThreshold);
         for(OrderBookOrderInformation askInformation: orderBookData.getAsks()) {
             if(askInformation.getPrice() < limitAskPrice) {
                 this.indicatorsOrderBook.addAsksOrderBookImbalanceQtt(askInformation.getQuantity());
@@ -51,11 +111,8 @@ public class IOBServiceImpl implements IOBService {
     }
 
     private void computeVolumeMvt(OrderBookData orderBookData) {
-        if(orderBookDataTMoins1 != null) {
-            this.indicatorsOrderBook.addByerPression(this.computeAsksVolumeMvt(orderBookData));
-            this.indicatorsOrderBook.addSellerPression(this.computeBidsVolumeMvt(orderBookData));
-        }
-        orderBookDataTMoins1 = orderBookData;
+        this.indicatorsOrderBook.addByerPression(this.computeAsksVolumeMvt(orderBookData));
+        this.indicatorsOrderBook.addSellerPression(this.computeBidsVolumeMvt(orderBookData));
     }
 
     /**
@@ -108,14 +165,27 @@ public class IOBServiceImpl implements IOBService {
         this.indicatorsOrderBook.setBidsOrderBookImbalanceQtt(0);
         this.indicatorsOrderBook.setBuyerPression(0);
         this.indicatorsOrderBook.setSellerPression(0);
+        this.indicatorsOrderBook.setVariationValue(0);
+        this.indicatorsOrderBook.setVariationDirection(VariationDirection.RAS);
+        this.indicatorsOrderBook.setSpreadValue(0);
+        this.indicatorsOrderBook.setBidsOrderLimitVolume(0);
+        this.indicatorsOrderBook.setAsksOrderLimitVolume(0);
     }
 
     @Override
     public String getCsvLine(String symbol, IndicatorsOrderBook indicatorsOrderBook) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return String.format("%s;%s;%.2f;%.2f",symbol, sdf.format(new Date())
+        return String.format("%s;%s;%.5f;%.5f;%.5f;%s;%.5f;%.5f;%.5f"
+                ,symbol
+                ,sdf.format(new Date())
                 ,indicatorsOrderBook.getBuyerPression()
-                ,indicatorsOrderBook.getSellerPression());
+                ,indicatorsOrderBook.getSellerPression()
+                ,indicatorsOrderBook.getVariationValue()
+                ,indicatorsOrderBook.getVariationDirection().getDirection()
+                ,indicatorsOrderBook.getSpreadValue()
+                ,indicatorsOrderBook.getBidsOrderLimitVolume()
+                ,indicatorsOrderBook.getAsksOrderLimitVolume()
+        );
     }
 
 }

@@ -15,6 +15,16 @@ public class IndicatorsOrderBook {
 
     private double asksOrderBookImbalanceQtt = 0;
 
+    private double variationValue = 0;
+
+    private VariationDirection variationDirection;
+
+    private double spreadValue = 0;
+
+    private double bidsOrderLimitVolume = 0;
+
+    private double asksOrderLimitVolume = 0;
+
     public void addBidsOrderBookImbalanceQtt(double qtt) {
         this.bidsOrderBookImbalanceQtt += qtt;
     }

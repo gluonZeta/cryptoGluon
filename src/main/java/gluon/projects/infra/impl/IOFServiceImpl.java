@@ -21,7 +21,9 @@ public class IOFServiceImpl implements IOFService {
     @Override
     public String getCsvLine(String symbol,IndicatorsOrderFlow indicatorsOrderFlow) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return String.format("%s;%s;%.2f;%.2f",symbol, sdf.format(indicatorsOrderFlow.getTradingTime())
+        return String.format("%s;%s;%.2f;%.2f"
+                ,symbol
+                ,sdf.format(indicatorsOrderFlow.getTradingTime())
                 ,indicatorsOrderFlow.getBidsCumulPression()
                 ,indicatorsOrderFlow.getAsksCumulPression());
     }
