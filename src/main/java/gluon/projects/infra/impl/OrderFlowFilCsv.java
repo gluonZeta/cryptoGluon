@@ -32,7 +32,7 @@ public class OrderFlowFilCsv implements Runnable {
         logger.info(String.format("XXXXXX %s", this.symbol));
         while(true) {
             try {
-                TimeUnit.MINUTES.sleep(1);
+                TimeUnit.MINUTES.sleep(5);
                 if(indicatorsOrderFlow.getAsksCumulPression() != 0 && indicatorsOrderFlow.getBidsCumulPression() != 0) {
                     String csvLine = this.iofService.getCsvLine(symbol,indicatorsOrderFlow);
                     fileStorageSymbolService.write(csvLine);
