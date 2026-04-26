@@ -15,7 +15,9 @@ public class IndicatorsOrderBook {
 
     private double asksOrderBookImbalanceQtt = 0;
 
-    private double variationValue = 0;
+    private double increaseVariationValue = 0;
+
+    private double decreaseVariationValue = 0;
 
     private VariationDirection variationDirection;
 
@@ -39,6 +41,14 @@ public class IndicatorsOrderBook {
 
     public void addSellerPression(double addValue) {
         this.sellerPression += addValue;
+    }
+
+    public void addIncreaseVariation(double addValue) {
+        this.increaseVariationValue += addValue;
+    }
+
+    public void addDecreaseVariation(double addValue) {
+        this.decreaseVariationValue += addValue;
     }
 
     public String toStringPression() {

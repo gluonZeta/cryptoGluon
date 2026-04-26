@@ -19,6 +19,8 @@ public class IOBServiceImpl implements IOBService {
 
     private OrderBookData orderBookDataTMoins1;
 
+    private OrderBookData orderBookInitial;
+
     private String symbol;
 
     private double orderBookImbalanceThreshold = 0.005f;
@@ -82,13 +84,23 @@ public class IOBServiceImpl implements IOBService {
         indicatorsOrderBook.setVariationDirection(VariationDirection.RAS);
 
         if(bestBidTMoins1 > bestBidT) {
-            indicatorsOrderBook.setVariationDirection(VariationDirection.DOWN);
-            indicatorsOrderBook.setVariationValue((bestBidTMoins1-bestBidT)*100/bestBidTMoins1);
+            indicatorsOrderBook.addDecreaseVariation((bestBidTMoins1-bestBidT)*100/bestBidTMoins1);
         }
         if(bestAskTMoins1 < bestAskT) {
-            indicatorsOrderBook.setVariationDirection(VariationDirection.UP);
-            indicatorsOrderBook.setVariationValue((bestAskT-bestAskTMoins1)*100/bestAskTMoins1);
+            indicatorsOrderBook.addIncreaseVariation((bestAskT-bestAskTMoins1)*100/bestAskTMoins1);
         }
+
+        if(this.orderBookInitial == null) {
+            this.orderBookInitial = orderBookDataT;
+        } else {
+            if(this.orderBookInitial.getBids().get(0).getPrice() > bestBidT) {
+                indicatorsOrderBook.setVariationDirection(VariationDirection.DOWN);
+            }
+            if(this.orderBookInitial.getAsks().get(0).getPrice() < bestAskT) {
+                indicatorsOrderBook.setVariationDirection(VariationDirection.UP);
+            }
+        }
+
     }
 
 
@@ -165,22 +177,25 @@ public class IOBServiceImpl implements IOBService {
         this.indicatorsOrderBook.setBidsOrderBookImbalanceQtt(0);
         this.indicatorsOrderBook.setBuyerPression(0);
         this.indicatorsOrderBook.setSellerPression(0);
-        this.indicatorsOrderBook.setVariationValue(0);
+        this.indicatorsOrderBook.setDecreaseVariationValue(0);
+        this.indicatorsOrderBook.setIncreaseVariationValue(0);
         this.indicatorsOrderBook.setVariationDirection(VariationDirection.RAS);
         this.indicatorsOrderBook.setSpreadValue(0);
         this.indicatorsOrderBook.setBidsOrderLimitVolume(0);
         this.indicatorsOrderBook.setAsksOrderLimitVolume(0);
+        this.orderBookInitial = null;
     }
 
     @Override
     public String getCsvLine(String symbol, IndicatorsOrderBook indicatorsOrderBook) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return String.format("%s;%s;%.5f;%.5f;%.5f;%s;%.5f;%.5f;%.5f"
+        return String.format("%s;%s;%.5f;%.5f;%.5f;%.5f;%s;%.5f;%.5f;%.5f"
                 ,symbol
                 ,sdf.format(new Date())
                 ,indicatorsOrderBook.getBuyerPression()
                 ,indicatorsOrderBook.getSellerPression()
-                ,indicatorsOrderBook.getVariationValue()
+                ,indicatorsOrderBook.getDecreaseVariationValue()
+                ,indicatorsOrderBook.getIncreaseVariationValue()
                 ,indicatorsOrderBook.getVariationDirection().getDirection()
                 ,indicatorsOrderBook.getSpreadValue()
                 ,indicatorsOrderBook.getBidsOrderLimitVolume()
