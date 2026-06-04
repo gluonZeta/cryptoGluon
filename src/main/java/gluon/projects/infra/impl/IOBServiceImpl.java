@@ -128,6 +128,7 @@ public class IOBServiceImpl implements IOBService {
     }
 
     /**
+     * Seller Volume eat <=> pression de vente
      * S'inspire du projet scalpingproject
      * @param orderBookDataT
      * @return
@@ -151,6 +152,12 @@ public class IOBServiceImpl implements IOBService {
         return sellerVolumeEat;
     }
 
+
+    /**
+     * Pression d'achat
+     * @param orderBookDataT
+     * @return
+     */
     private double computeAsksVolumeMvt(OrderBookData orderBookDataT) {
         double byerVolumeEat = 0;
         double bestAskTMoins1 = this.orderBookDataTMoins1.getAsks().get(0).getPrice();
@@ -192,14 +199,14 @@ public class IOBServiceImpl implements IOBService {
         return String.format("%s;%s;%.5f;%.5f;%.5f;%.5f;%s;%.5f;%.5f;%.5f"
                 ,symbol
                 ,sdf.format(new Date())
-                ,indicatorsOrderBook.getBuyerPression()
-                ,indicatorsOrderBook.getSellerPression()
-                ,indicatorsOrderBook.getDecreaseVariationValue()
-                ,indicatorsOrderBook.getIncreaseVariationValue()
-                ,indicatorsOrderBook.getVariationDirection().getDirection()
-                ,indicatorsOrderBook.getSpreadValue()
-                ,indicatorsOrderBook.getBidsOrderLimitVolume()
-                ,indicatorsOrderBook.getAsksOrderLimitVolume()
+                ,indicatorsOrderBook.getBuyerPression() // Pression d'achat, acheteur va attaqué les ligne du ASKS
+                ,indicatorsOrderBook.getSellerPression() // Pression de vente, vendeur volume attack coté acheteur
+                ,indicatorsOrderBook.getDecreaseVariationValue() // variation descente
+                ,indicatorsOrderBook.getIncreaseVariationValue() // augmentation
+                ,indicatorsOrderBook.getVariationDirection().getDirection() // direction de la variation
+                ,indicatorsOrderBook.getSpreadValue() // spread
+                ,indicatorsOrderBook.getBidsOrderLimitVolume() // volume des order en attente côté bids
+                ,indicatorsOrderBook.getAsksOrderLimitVolume() // volume des ordre en attente côté Asks
         );
     }
 

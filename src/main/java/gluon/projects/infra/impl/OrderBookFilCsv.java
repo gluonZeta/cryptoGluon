@@ -33,7 +33,7 @@ public class OrderBookFilCsv implements Runnable {
         logger.info(String.format("OrderBook %s", this.symbol));
         while(true) {
             try {
-                TimeUnit.MINUTES.sleep(5);
+                TimeUnit.MINUTES.sleep(1);
                 String csvLine = this.iobService.getCsvLine(symbol,indicatorsOrderBook);
                 this.orderBookFileStorageSymbolService.write(csvLine);
                 iobService.cleanIndicatorsOrderBook();
