@@ -63,16 +63,16 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
 
     private List<String> excludedSymbol() {
         List<String> symbolExclus = new ArrayList<>();
-        symbolExclus.add("TUSDUSDC");
-        symbolExclus.add("FDUSDUSDC");
-        symbolExclus.add("BROCCOLI714USDC");
+        symbolExclus.add("TUSDUSDT");
+        symbolExclus.add("FDUSDUSDT");
+        symbolExclus.add("BROCCOLI714USDT");
         return symbolExclus;
     }
 
     private boolean filterStringSymbol(String symbol) {
         boolean allow = false;
-        if(symbol.endsWith("USDC")
-                && !symbol.startsWith("USDC")
+        if(symbol.endsWith("USDT")
+                && !symbol.startsWith("USDT")
                 && !symbol.contains("DOWN")
                 && !symbol.contains("BULL")
                 && !symbol.contains("BEAR")
@@ -106,7 +106,7 @@ public class SymbolCryptoServiceImpl implements SymbolCryptoService {
 
     private boolean allowedSymbolException(String symbol) {
         List<String> listAllowedSymbol = new ArrayList<>();
-        listAllowedSymbol.add("SHIBUSDC");
+        listAllowedSymbol.add("SHIBUSDT");
         boolean result = false;
         if(listAllowedSymbol.contains(symbol)) result = true;
         return result;
