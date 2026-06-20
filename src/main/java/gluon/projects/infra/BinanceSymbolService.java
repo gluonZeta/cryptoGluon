@@ -8,4 +8,6 @@ public interface BinanceSymbolService {
 
     public JSONArray getSymbolHistoricalData(String symbol, int yearLimit);
 
+    public JSONArray getSymbolHistoricalDateBySymbolAndInterval(String symbol, String interval);
+
 }
